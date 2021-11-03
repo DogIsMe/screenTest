@@ -7,6 +7,16 @@ Created on Tue Nov  2 14:12:15 2021
 
 import pyautogui as g
 
+
+# g.click()
+
+def get_image(name):
+    return 
+    
+    
+    
+    
+
 test_position= (1424,0)
 test_position2= (1500,500)
 g.PAUSE =5
@@ -15,7 +25,7 @@ print(g.position())
 # g.click()
 # g.move(100,200)
 x= g.locateOnScreen('2.png')
-g.moveTo(x)
+# g.moveTo(x)
 
 
 
