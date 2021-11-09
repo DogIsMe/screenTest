@@ -61,13 +61,13 @@ def click_png(url):
     pos = get_tu_pian_position(url)
     if pos:
         g.click(pos)
-        g.click(pos)
+        # g.click(pos)
         return True
     else:
         return False
 
 def wait_click_png(url):
-    for i in range(20):
+    for i in range(30):
         if not click_png(url):
             g.sleep(1)
         else:
@@ -78,7 +78,7 @@ def wait_click_png(url):
 
 
 def fin_png(url):
-    for i in range(20):
+    for i in range(30):
         if get_tu_pian_position(url)== None:
             g.sleep(1)
         else:
@@ -86,12 +86,18 @@ def fin_png(url):
    
     return False
 
+def wait_error():
+    if not wait_click_png('kai_shi_an_niu_1.png'):
+        t = '等待点击开始按钮时报错!'
+        mail(t)
+        raise Exception (t)
+
 def shu_biao_init():
     g.moveTo(qu_yu[0],qu_yu[1])
 
 def wait_dan_dou_sheng_li():
     shu_biao_init()
-    for i in range(20):
+    for i in range(30):
         if not click_png('zhan_dou_sheng_li_1.png'):
             if get_tu_pian_position ('jiu_xu_an_niu_2.png') == None:
                 g.sleep(1)
@@ -114,20 +120,23 @@ def zhan_dou():
      g.sleep(5)
      shu_biao_init()
      if not wait_click_png('yi_deng_chang_1.png'):
-         mail()
-         raise Exception('yi_deng_chang_1 error')
+         t = '等待已登场按钮报错!'
+         mail(t)
+         raise Exception(t)
      shu_biao_init()
      if not fin_png('jiu_xu_an_niu_3.png'):
-         mail()
-         raise Exception ('jiu_xu_an_niu_3.png is error')
+         t='无法找到就绪按钮！'
+         mail(t)
+         raise Exception (t)
      shi_fang_ji_neng_1()
      ji_neng_1_times = 1
      while wait_dan_dou_sheng_li() == False:
          shi_fang_ji_neng_1()
          ji_neng_1_times +=1
          if ji_neng_1_times > 10:
-             mail()
-             raise Exception("error")
+             t = '释放技能一大于10次了'
+             mail(t)
+             raise Exception(t)
          
 
 def xuan_ze_bao_zang():
@@ -141,9 +150,8 @@ def xuan_ze_bao_zang():
 def guan_qia_1():
     print('关卡1')
     g.click(qu_yu[0]+370,qu_yu[1]+370)         
-    if not wait_click_png('kai_shi_an_niu_1.png'):
-        mail()
-        raise Exception ('kai_shi_an_niu_1错误错误')
+    wait_error()
+    
     zhan_dou()
     g.sleep(2)
     xuan_ze_bao_zang()
@@ -157,9 +165,9 @@ def guan_qia_2():
     g.click(qu_yu[0]+275,qu_yu[1]+385)
     g.click(qu_yu[0]+550,qu_yu[1]+385)
     g.click(qu_yu[0]+210,qu_yu[1]+385)
-    if not wait_click_png('kai_shi_an_niu_1.png'):
-        mail()
-        raise Exception ('kai_shi_an_niu_1错误')
+    
+    wait_error()
+    
     zhan_dou()
     g.sleep(2)
     xuan_ze_bao_zang()
@@ -169,9 +177,8 @@ def guan_qia_3():
     g.click(qu_yu[0]+170,qu_yu[1]+410)
     g.click(qu_yu[0]+370,qu_yu[1]+410)
     g.click(qu_yu[0]+570,qu_yu[1]+410)
-    if not wait_click_png('kai_shi_an_niu_1.png'):
-        mail()
-        raise Exception ('kai_shi_an_niu_1错误')
+    wait_error()
+    
     zhan_dou()
     g.sleep(2)
     #选择宝藏1
@@ -181,9 +188,8 @@ def guan_qia_3():
 def boss_guan_qia():
     print('boss关卡')
     g.click(qu_yu[0]+370,qu_yu[1]+190)
-    if not wait_click_png('kai_shi_an_niu_1.png'):
-        mail() 
-        raise Exception ('kai_shi_an_niu_1错误')
+    wait_error()
+    
     zhan_dou()
     g.sleep(15)
  
@@ -208,21 +214,21 @@ countTime =0
 # while False:
 while True:
     if not wait_click_png('1-1-xuan_zhong_2.png'):
-        mail()
-        print("1")
-        break
+        t ='选择1-1关卡报错了'
+        mail(t)
+        raise Exception(t)
     if not wait_click_png('xuan_ze_an_niu_2.png'):
-        mail()
-        print("5")
-        break
+        t ='队伍选择按钮报错了'
+        mail(t)
+        raise Exception(t)
     
     # if not click_png('dui_wu_1.png'):
     #     print("2")
     #     break
     if not wait_click_png('xuan_ze_an_niu_2.png'):
-        mail()
-        print("3")
-        break
+        t ='关卡选择按钮报错了'
+        mail(t)
+        raise Exception(t)
     # if not click_png('suo_ding_an_niu.png'):
     #     print("4")
     #     break
