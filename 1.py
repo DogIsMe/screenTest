@@ -44,6 +44,8 @@ pos_1 =g.locateOnScreen('lu_shi_chuan_shuo_wen_zi.png', grayscale=True,confidenc
 qu_yu =(pos_1.left,pos_1.top,1912-pos_1.left,809-pos_1.top)
 print(qu_yu)
 
+record_message = ''
+
 def get_tu_pian_position(url):
     for i in range(5):
         box= g.locateOnScreen(url,grayscale=True,confidence=0.5,region=qu_yu)
@@ -71,7 +73,6 @@ def wait_click_png(url):
         if not click_png(url):
             g.sleep(1)
         else:
-            print(str(i)+'waits')
             return True
     return False 
 
@@ -87,9 +88,11 @@ def fin_png(url):
     return False
 
 def wait_error():
+    global record_message
     if not wait_click_png('kai_shi_an_niu_1.png'):
         t = '等待点击开始按钮时报错!'
-        mail(t)
+        record_message = record_message + '\n' +  t
+        mail(record_message)
         raise Exception (t)
 
 def shu_biao_init():
@@ -104,7 +107,6 @@ def wait_dan_dou_sheng_li():
             else:
                 return False
         else:
-            print(str(i)+'waits')
             return True
     return False 
 
@@ -116,17 +118,21 @@ def shi_fang_ji_neng_1():
     click_png('jiu_xu_an_niu_1.png')
     
 def zhan_dou():
-     print('战斗')
+     global record_message
+     record_message = record_message +'战斗!'
+     print(record_message)
      g.sleep(5)
      shu_biao_init()
      if not wait_click_png('yi_deng_chang_1.png'):
          t = '等待已登场按钮报错!'
-         mail(t)
+         record_message = record_message+'\n'+ t
+         mail(record_message)
          raise Exception(t)
      shu_biao_init()
      if not fin_png('jiu_xu_an_niu_3.png'):
          t='无法找到就绪按钮！'
-         mail(t)
+         record_message = record_message+'\n'+ t
+         mail(record_message)
          raise Exception (t)
      shi_fang_ji_neng_1()
      ji_neng_1_times = 1
@@ -135,12 +141,15 @@ def zhan_dou():
          ji_neng_1_times +=1
          if ji_neng_1_times > 10:
              t = '释放技能一大于10次了'
-             mail(t)
+             record_message = record_message+'\n'+ t
+             mail(record_message)
              raise Exception(t)
          
 
 def xuan_ze_bao_zang():
-    print('选择宝藏')
+    global record_message
+    record_message = record_message + '选择宝藏'
+    print(record_message)    
     #选择宝藏1
     g.sleep(5)
     g.click(qu_yu[0]+420,qu_yu[1]+380)
@@ -148,7 +157,9 @@ def xuan_ze_bao_zang():
     g.sleep(5)
 
 def guan_qia_1():
-    print('关卡1')
+    global record_message
+    record_message ='关卡1'
+    print(record_message)
     g.click(qu_yu[0]+370,qu_yu[1]+370)         
     wait_error()
     
@@ -157,7 +168,9 @@ def guan_qia_1():
     xuan_ze_bao_zang()
     
 def guan_qia_2():
-    print('关卡2')
+    global record_message
+    record_message ='关卡2'
+    print(record_message)
     #关卡2   
     g.click(qu_yu[0]+280,qu_yu[1]+385)
     g.click(qu_yu[0]+485,qu_yu[1]+385)
@@ -173,7 +186,9 @@ def guan_qia_2():
     xuan_ze_bao_zang()
 
 def guan_qia_3():
-    print('关卡3')
+    global record_message
+    record_message ='关卡3'
+    print(record_message)
     g.click(qu_yu[0]+170,qu_yu[1]+410)
     g.click(qu_yu[0]+370,qu_yu[1]+410)
     g.click(qu_yu[0]+570,qu_yu[1]+410)
@@ -186,7 +201,9 @@ def guan_qia_3():
     
 
 def boss_guan_qia():
-    print('boss关卡')
+    global record_message
+    record_message ='boss关卡'
+    print(record_message)
     g.click(qu_yu[0]+370,qu_yu[1]+190)
     wait_error()
     
@@ -194,6 +211,9 @@ def boss_guan_qia():
     g.sleep(15)
  
 def tong_guan_jiang_li():
+    global record_message
+    record_message ='通关奖励'
+    print(record_message)
     g.click(qu_yu[0]+540,qu_yu[1]+265)
     g.click(qu_yu[0]+320,qu_yu[1]+590)
     g.click(qu_yu[0]+780,qu_yu[1]+590)
