@@ -63,6 +63,7 @@ def click_png(url):
     pos = get_tu_pian_position(url)
     if pos:
         g.click(pos)
+        g.sleep(1)
         # g.click(pos)
         return True
     else:
@@ -237,11 +238,12 @@ while True:
         t ='选择1-1关卡报错了'
         mail(t)
         raise Exception(t)
+    g.sleep(1)
     if not wait_click_png('xuan_ze_an_niu_2.png'):
         t ='队伍选择按钮报错了'
         mail(t)
         raise Exception(t)
-    
+    g.sleep(1)
     # if not click_png('dui_wu_1.png'):
     #     print("2")
     #     break
@@ -249,6 +251,7 @@ while True:
         t ='关卡选择按钮报错了'
         mail(t)
         raise Exception(t)
+    g.sleep(1)
     # if not click_png('suo_ding_an_niu.png'):
     #     print("4")
     #     break
