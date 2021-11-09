@@ -4,31 +4,8 @@ Created on Tue Nov  2 14:12:15 2021
 
 @author: tt
 """
-import smtplib
-from email.mime.text import MIMEText
-from email.utils import formataddr
+
 import pyautogui as g
-
-
-my_sender='1514317161@qq.com'    # 发件人邮箱账号
-my_pass = 'cueutwmxunrficfi'              # 发件人邮箱密码
-my_user='henanyidoubi@163.com'      # 收件人邮箱账号，我这边发送给自己
-
-def mail(text ='出错了！'):
-    try:
-        msg=MIMEText(text,'plain','utf-8')
-        msg['From']=formataddr(["FromRunoob",my_sender])  # 括号里的对应发件人邮箱昵称、发件人邮箱账号
-        msg['To']=formataddr(["FK",my_user])              # 括号里的对应收件人邮箱昵称、收件人邮箱账号
-        msg['Subject']="脚本运行情况"                # 邮件的主题，也可以说是标题
- 
-        server=smtplib.SMTP_SSL("smtp.qq.com", 465)  # 发件人邮箱中的SMTP服务器，端口是25
-        server.login(my_sender, my_pass)  # 括号中对应的是发件人邮箱账号、邮箱密码
-        server.sendmail(my_sender,[my_user,],msg.as_string())  # 括号中对应的是发件人邮箱账号、收件人邮箱账号、发送邮件
-        server.quit()  # 关闭连接
-    except Exception:  # 如果 try 中的语句没有执行，则会执行下面的 ret=False
-        print("邮件发送失败")
-        return
-    print("邮件发送成功")
 
 g.PAUSE =1
 
@@ -38,12 +15,15 @@ g.PAUSE =1
 
 # print(x)
 
-
+map_pin_1={
+    1:'1-1',
+    2:'1-2',
+    3:'1-3',}
 #定位窗口坐标
 pos_1 =g.locateOnScreen('lu_shi_chuan_shuo_wen_zi.png', grayscale=True,confidence=0.5)
 qu_yu =(pos_1.left,pos_1.top,1912-pos_1.left,809-pos_1.top)
 print(qu_yu)
-
+last_position =[]
 def get_tu_pian_position(url):
     for i in range(5):
         box= g.locateOnScreen(url,grayscale=True,confidence=0.5,region=qu_yu)
@@ -60,6 +40,7 @@ def get_p_1(map_id):
 def click_png(url):
     pos = get_tu_pian_position(url)
     if pos:
+        last_position = pos
         g.click(pos)
         g.click(pos)
         return True
@@ -105,7 +86,7 @@ def wait_dan_dou_sheng_li():
 def shi_fang_ji_neng_1():
     print('释放技能1')
     #按下技能1
-    g.click(qu_yu[0]+380,qu_yu[1]+370)
+    g.click(qu_yu[0]+510,qu_yu[1]+370)
     g.click(qu_yu[0]+480,qu_yu[1]+235)
     click_png('jiu_xu_an_niu_1.png')
     
@@ -114,21 +95,13 @@ def zhan_dou():
      g.sleep(5)
      shu_biao_init()
      if not wait_click_png('yi_deng_chang_1.png'):
-         mail()
          raise Exception('yi_deng_chang_1 error')
      shu_biao_init()
      if not fin_png('jiu_xu_an_niu_3.png'):
-         mail()
          raise Exception ('jiu_xu_an_niu_3.png is error')
      shi_fang_ji_neng_1()
-     ji_neng_1_times = 1
      while wait_dan_dou_sheng_li() == False:
          shi_fang_ji_neng_1()
-         ji_neng_1_times +=1
-         if ji_neng_1_times > 10:
-             mail()
-             raise Exception("error")
-         
 
 def xuan_ze_bao_zang():
     print('选择宝藏')
@@ -142,7 +115,6 @@ def guan_qia_1():
     print('关卡1')
     g.click(qu_yu[0]+370,qu_yu[1]+370)         
     if not wait_click_png('kai_shi_an_niu_1.png'):
-        mail()
         raise Exception ('kai_shi_an_niu_1错误错误')
     zhan_dou()
     g.sleep(2)
@@ -158,7 +130,6 @@ def guan_qia_2():
     g.click(qu_yu[0]+550,qu_yu[1]+385)
     g.click(qu_yu[0]+210,qu_yu[1]+385)
     if not wait_click_png('kai_shi_an_niu_1.png'):
-        mail()
         raise Exception ('kai_shi_an_niu_1错误')
     zhan_dou()
     g.sleep(2)
@@ -170,7 +141,6 @@ def guan_qia_3():
     g.click(qu_yu[0]+370,qu_yu[1]+410)
     g.click(qu_yu[0]+570,qu_yu[1]+410)
     if not wait_click_png('kai_shi_an_niu_1.png'):
-        mail()
         raise Exception ('kai_shi_an_niu_1错误')
     zhan_dou()
     g.sleep(2)
@@ -182,8 +152,7 @@ def boss_guan_qia():
     print('boss关卡')
     g.click(qu_yu[0]+370,qu_yu[1]+190)
     if not wait_click_png('kai_shi_an_niu_1.png'):
-        mail() 
-        raise Exception ('kai_shi_an_niu_1错误')
+         raise Exception ('kai_shi_an_niu_1错误')
     zhan_dou()
     g.sleep(15)
  
@@ -208,11 +177,9 @@ countTime =0
 # while False:
 while True:
     if not wait_click_png('1-1-xuan_zhong_2.png'):
-        mail()
         print("1")
         break
     if not wait_click_png('xuan_ze_an_niu_2.png'):
-        mail()
         print("5")
         break
     
@@ -220,7 +187,6 @@ while True:
     #     print("2")
     #     break
     if not wait_click_png('xuan_ze_an_niu_2.png'):
-        mail()
         print("3")
         break
     # if not click_png('suo_ding_an_niu.png'):
@@ -233,7 +199,7 @@ while True:
     guan_qia_3()
     
     boss_guan_qia()
-    g.sleep(3)
+    
     tong_guan_jiang_li()
     
     g.click(qu_yu[0]+510,qu_yu[1]+650)
@@ -243,7 +209,7 @@ while True:
 # print(g.position())
 # x = get_tu_pian_position('jiu_xu_an_niu_2.png')
 # print(x)
-# mail()
+
 
 
 
