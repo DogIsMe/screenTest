@@ -31,8 +31,8 @@ def mail(text ='出错了！'):
     print("邮件发送成功")
 
 g.PAUSE =1
-
-
+#等待次数
+wait_times = 20
 
 # x= g.locateOnScreen('xuan_shang_tu_biao.png')
 
@@ -45,6 +45,9 @@ qu_yu =(pos_1.left,pos_1.top,1912-pos_1.left,809-pos_1.top)
 print(qu_yu)
 
 record_message = ''
+
+def shu_biao_init():
+    g.moveTo(qu_yu[0],qu_yu[1])
 
 def get_tu_pian_position(url):
     for i in range(5):
@@ -60,8 +63,10 @@ def get_p_1(map_id):
  
 
 def click_png(url):
+    shu_biao_init()
     pos = get_tu_pian_position(url)
     if pos:
+        g.sleep(1)
         g.click(pos)
         g.sleep(1)
         # g.click(pos)
@@ -70,7 +75,7 @@ def click_png(url):
         return False
 
 def wait_click_png(url):
-    for i in range(30):
+    for i in range(wait_times):
         if not click_png(url):
             g.sleep(1)
         else:
@@ -80,7 +85,7 @@ def wait_click_png(url):
 
 
 def fin_png(url):
-    for i in range(30):
+    for i in range(wait_times):
         if get_tu_pian_position(url)== None:
             g.sleep(1)
         else:
@@ -96,12 +101,11 @@ def wait_error():
         mail(record_message)
         raise Exception (t)
 
-def shu_biao_init():
-    g.moveTo(qu_yu[0],qu_yu[1])
+
 
 def wait_dan_dou_sheng_li():
     shu_biao_init()
-    for i in range(30):
+    for i in range(wait_times):
         if not click_png('zhan_dou_sheng_li_1.png'):
             if get_tu_pian_position ('jiu_xu_an_niu_2.png') == None:
                 g.sleep(1)
